@@ -76,14 +76,21 @@
                                     <td colspan="3" style="font-size: 16px; font-weight: bold;">{{ $subsection->title }}
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>{{$subsection->questions[0]->yes_desc}}</td>
+                                    <td>{{$subsection->questions[0]->no_desc}}</td>
+                                    <td>Notes</td>
+
+                                </tr>
                                 @foreach ($subsection->questions as $question)
                                     @if ($question->type != 'image')
-                                        <tr>
+                                        {{-- <tr>
                                             <td></td>
                                             <td>{{ $question->yes_desc }}</td>
                                             <td>{{ $question->no_desc }}</td>
                                             <td>Note</td>
-                                        </tr>
+                                        </tr> --}}
                                         <tr>
                                             {{-- <td data-question-id="{{ $question->id }}">{{ $question->question }}</td> --}}
                                             <td data-question-id="{{ $question->id }}">

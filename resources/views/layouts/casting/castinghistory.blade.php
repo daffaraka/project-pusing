@@ -37,7 +37,8 @@
                                     <td>{{ Carbon\Carbon::parse($item['date'])->isoFormat('dddd, D MMMM Y') }}</td>
                                     <td>
                                         @foreach ($item['auditors'] as $auditor)
-                                            <li>{{ $auditor->auditor_name }} <a href="{{route('detailCastingHistory',['id_user'=>$auditor->id, 'date' => $item['date']])}}"
+                                            <li>{{ $auditor->auditor_name }} <a
+                                                    href="{{ route('detailCastingHistory', ['id_user' => $auditor->id, 'date' => $item['date']]) }}"
                                                     class="btn btn-primary my-3 btn-sm">Detail</a></li>
                                         @endforeach
                                     </td>
