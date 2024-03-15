@@ -88,10 +88,8 @@ class DashboardController extends Controller
     {
         $judul = "CHECKSHEET CASTING HISTORY";
         $query = FixAnswer::selectRaw('DATE(created_at) as date, auditor_id')
-            ->whereHas('auditors', function ($query) {
-                $query->whereHas('answers.questions.subsection.sections', function ($query) {
-                    $query->where('area', 'Casting HPDC');
-                });
+            ->whereHas('questions.subsection.sections', function ($query) {
+                $query->where('area', 'Casting HPDC ');
             });
         if ($request->filled('date_from')) {
             $query->whereDate('created_at', '>=', $request->date_from);
@@ -126,10 +124,11 @@ class DashboardController extends Controller
                 $query->where('area', 'Casting HPDC');
             })->with('questions.subsection.sections')
             ->get();
+        $totalQuestion = count(Question::whereIn('subsection_id', [1, 2, 3, 4, 5, 6, 7, 8])->get());
 
 
 
         // dd($data);
-        return view('layouts.casting.detailCastingHistory', compact(['judul', 'data', 'auditor']));
+        return view('layouts.casting.detailCastingHistory', compact(['judul', 'data', 'auditor', 'totalQuestion']));
     }
 }

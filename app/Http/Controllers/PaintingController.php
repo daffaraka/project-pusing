@@ -49,9 +49,9 @@ class PaintingController extends Controller
                     ->whereHas('questions.subsection.sections', function ($query) {
                         $query->where('area', 'Painting');
                     });
-                    $query->whereDate('created_at', $today);
+                $query->whereDate('created_at', $today);
 
-                 // Tambahkan kondisi tambahan ke dalam relasi answers
+                // Tambahkan kondisi tambahan ke dalam relasi answers
             })
             ->get();
 
@@ -61,7 +61,7 @@ class PaintingController extends Controller
 
         $totalSection = count(Section::whereArea('Painting')->get());
         $totalQuestion = count(Question::whereIn('subsection_id', [19, 20, 21, 22])->get());
-        return view('layouts.painting.dashboardpainting', compact('sectionId', 'auditorsPainting', 'subsectionId', 'questionId', 'answerId', 'totalSection', 'totalQuestion','judul','monthlyPainting'));
+        return view('layouts.painting.dashboardpainting', compact('sectionId', 'auditorsPainting', 'subsectionId', 'questionId', 'answerId', 'totalSection', 'totalQuestion', 'judul', 'monthlyPainting'));
     }
 
 
@@ -90,11 +90,10 @@ class PaintingController extends Controller
     {
         $judul = "CHECKSHEET PAINTING HISTORY";
         $query = FixAnswer::selectRaw('DATE(created_at) as date, auditor_id')
-            ->whereHas('auditors', function ($query) {
-                $query->whereHas('answers.questions.subsection.sections', function ($query) {
-                    $query->where('area', 'Painting');
-                });
+            ->whereHas('questions.subsection.sections', function ($query) {
+                $query->where('area', 'Painting');
             });
+
         if ($request->filled('date_from')) {
             $query->whereDate('created_at', '>=', $request->date_from);
         }

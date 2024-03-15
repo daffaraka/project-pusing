@@ -33,7 +33,7 @@ class MachinningController extends Controller
             ->selectRaw('auditors.auditor_name, sections.area, COUNT(DISTINCT DATE(fix_answers.created_at)) as total_days_with_audit')
             ->where('sections.area', 'Machining ')
             ->groupBy('auditors.auditor_name', 'sections.area')
-            ->get() ;
+            ->get();
 
         // dd($today);
         $auditorsMachining = Auditor::whereHas('answers', function ($query) use ($today) {
@@ -94,11 +94,10 @@ class MachinningController extends Controller
     {
         $judul = "MACHINING HISTORY";
         $query = FixAnswer::selectRaw('DATE(created_at) as date, auditor_id')
-            ->whereHas('auditors', function ($query) {
-                $query->whereHas('answers.questions.subsection.sections', function ($query) {
-                    $query->where('area', 'Machining');
-                });
+            ->whereHas('questions.subsection.sections', function ($query) {
+                $query->where('area', 'Machining');
             });
+        // dd($query->get());
         if ($request->filled('date_from')) {
             $query->whereDate('created_at', '>=', $request->date_from);
         }
@@ -118,7 +117,6 @@ class MachinningController extends Controller
         });
 
 
-        // dd($data);
         return view('layouts.machinning.machiningHistory', compact('judul', 'data', 'request'));
     }
 
@@ -133,6 +131,9 @@ class MachinningController extends Controller
                 $query->where('area', 'Machining');
             })->with('questions.subsection.sections')
             ->get();
-        return view('layouts.machinning.detailMachiningHistory', compact(['judul', 'data', 'auditor']));
+
+        $totalQuestion = count(Question::whereIn('subsection_id', [9, 10, 11, 12, 13, 14, 15, 16, 17, 18])->get());
+
+        return view('layouts.machinning.detailMachiningHistory', compact(['judul', 'data', 'auditor', 'totalQuestion']));
     }
 }

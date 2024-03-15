@@ -96,11 +96,10 @@ class SupplierController extends Controller
     {
         $judul = "Supplier HISTORY";
         $query = SuppAnswer::selectRaw('DATE(created_at) as date, auditor_id')
-            ->whereHas('auditors', function ($query) {
-                $query->whereHas('supp_answers.questions.subsection.sections', function ($query) {
-                    $query->where('area', 'Supplier');
-                });
+            ->whereHas('questions.subsection.sections', function ($query) {
+                $query->where('area', 'Supplier');
             });
+
         if ($request->filled('date_from')) {
             $query->whereDate('created_at', '>=', $request->date_from);
         }

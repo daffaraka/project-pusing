@@ -26,14 +26,14 @@ class AssyController extends Controller
 
 
         $monthlyAssy = FixAnswer::with(['auditors', 'auditors.answers'])
-        ->join('auditors', 'fix_answers.auditor_id', '=', 'auditors.id')
-        ->join('questions', 'fix_answers.question_id', '=', 'questions.id')
-        ->join('subsections', 'questions.subsection_id', '=', 'subsections.id')
-        ->join('sections', 'subsections.section_id', '=', 'sections.id')
-        ->selectRaw('auditors.auditor_name, sections.area, COUNT(DISTINCT DATE(fix_answers.created_at)) as total_days_with_audit')
-        ->where('sections.area', 'Assy')
-        ->groupBy('auditors.auditor_name', 'sections.area')
-        ->get();
+            ->join('auditors', 'fix_answers.auditor_id', '=', 'auditors.id')
+            ->join('questions', 'fix_answers.question_id', '=', 'questions.id')
+            ->join('subsections', 'questions.subsection_id', '=', 'subsections.id')
+            ->join('sections', 'subsections.section_id', '=', 'sections.id')
+            ->selectRaw('auditors.auditor_name, sections.area, COUNT(DISTINCT DATE(fix_answers.created_at)) as total_days_with_audit')
+            ->where('sections.area', 'Assy')
+            ->groupBy('auditors.auditor_name', 'sections.area')
+            ->get();
 
         // dd($today);
         $auditorsAssy = Auditor::whereHas('answers', function ($query) use ($today) {
@@ -50,8 +50,8 @@ class AssyController extends Controller
                     ->whereHas('questions.subsection.sections', function ($query) {
                         $query->where('area', 'Assy');
                     });
-                    $query->whereDate('created_at', $today);
-                 // Tambahkan kondisi tambahan ke dalam relasi answers
+                $query->whereDate('created_at', $today);
+                // Tambahkan kondisi tambahan ke dalam relasi answers
             })
             ->get();
         // dd($auditorsAssy);
@@ -66,9 +66,9 @@ class AssyController extends Controller
 
 
         // dd($auditors);
-        $totalQuestion = count(Question::whereIn('subsection_id', [23,24])->get());
+        $totalQuestion = count(Question::whereIn('subsection_id', [23, 24])->get());
 
-        return view('layouts.assy.dashboardassy', compact('sectionId', 'auditorsAssy', 'subsectionId', 'questionId', 'answerId', 'totalSection', 'totalQuestion','judul','monthlyAssy'));
+        return view('layouts.assy.dashboardassy', compact('sectionId', 'auditorsAssy', 'subsectionId', 'questionId', 'answerId', 'totalSection', 'totalQuestion', 'judul', 'monthlyAssy'));
     }
 
 
@@ -88,7 +88,7 @@ class AssyController extends Controller
 
 
 
-        $totalQuestion = count(Question::whereIn('subsection_id', [23,24])->get());
+        $totalQuestion = count(Question::whereIn('subsection_id', [23, 24])->get());
         return view('layouts.assy.detailAssy', compact('judul', 'data', 'totalQuestion', 'auditor'));
     }
 
@@ -96,10 +96,8 @@ class AssyController extends Controller
     {
         $judul = "CHECKSHEET ASSY HISTORY";
         $query = FixAnswer::selectRaw('DATE(created_at) as date, auditor_id')
-            ->whereHas('auditors', function ($query) {
-                $query->whereHas('answers.questions.subsection.sections', function ($query) {
-                    $query->where('area', 'Assy');
-                });
+            ->whereHas('questions.subsection.sections', function ($query) {
+                $query->where('area', 'Assy');
             });
         if ($request->filled('date_from')) {
             $query->whereDate('created_at', '>=', $request->date_from);
