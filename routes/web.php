@@ -17,6 +17,7 @@ use App\Http\Controllers\MachinningController;
 use App\Http\Controllers\PaintingController;
 use App\Http\Controllers\SuppAnswerController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
     // dd("NYANT");
@@ -46,11 +47,17 @@ Route::get('/get-auditor-level/{auditor_id}', function ($auditor_id) {
 
 
 Route::get('/checksheetassy', function () {
-    $judul = "CHECKSHEET Assy";
+    $judul = "CHECKSHEET ASSY";
     $sections = Section::with(['subsections'], ['parts'])->where('area', 'Assy')->get();
     $auditors = Auditor::all();
 
     return view('checksheetassy', compact('judul', 'sections', 'auditors'));
+});
+
+//login
+Route::get('/login',function(){
+    $judul = "LOGIN";
+    return view('login', compact('judul'));
 });
 
 
@@ -61,12 +68,16 @@ Route::get('/checksheetcasting', function () {
     $today = Carbon::today();
     $sections = Section::with(['subsections'], ['parts'])->where('area', 'Casting HPDC')->get();
 
-    $auditors = Auditor::whereDoesntHave('answers', function ($query) use ($today) {
-        $query->whereDate('created_at', $today)
-            ->whereHas('questions.subsection.sections', function ($query) {
-                $query->where('area', 'Casting HPDC');
-            });
-        })->get();
+    $auditorIds = [1]; // Ganti dengan daftar ID auditor yang Anda inginkan
+
+    $auditors = Auditor::whereIn('id', $auditorIds)
+        ->whereDoesntHave('answers', function ($query) use ($today) {
+            $query->whereDate('created_at', $today)
+                ->whereHas('questions.subsection.sections', function ($query) {
+                    $query->where('area', 'Assy');
+                });
+        })
+        ->get();
 
     // dd($today,$auditors);
     // dd(count($auditors));
@@ -83,12 +94,16 @@ Route::get('/checksheetmachining', function () {
     $judul = "CHECKSHEET MACHINING";
     $today = Carbon::today();
     $sections = Section::with(['subsections.questions'], ['parts'])->where('area', 'Machining')->get();
-    $auditors = Auditor::whereDoesntHave('answers', function ($query) use ($today) {
-        $query->whereDate('created_at', $today)
-            ->whereHas('questions.subsection.sections', function ($query) {
-                $query->where('area', 'Machining');
-            });
-    })->get();
+    $auditorIds = [2]; // Ganti dengan daftar ID auditor yang Anda inginkan
+
+    $auditors = Auditor::whereIn('id', $auditorIds)
+        ->whereDoesntHave('answers', function ($query) use ($today) {
+            $query->whereDate('created_at', $today)
+                ->whereHas('questions.subsection.sections', function ($query) {
+                    $query->where('area', 'Machining');
+                });
+        })
+        ->get();
 
     return view('layouts.machinning.checksheetmachining', compact('judul', 'sections', 'auditors'));
 });
@@ -106,12 +121,16 @@ Route::get('/checksheetpainting', function () {
     $today = Carbon::today();
     $sections = Section::with(['subsections'], ['parts'])->where('area', 'Painting')->get();
 
-    $auditors = Auditor::whereDoesntHave('answers', function ($query) use ($today) {
-        $query->whereDate('created_at', $today)
-            ->whereHas('questions.subsection.sections', function ($query) {
-                $query->where('area', 'Painting');
-            });
-    })->get();
+    $auditorIds = [4]; // Ganti dengan daftar ID auditor yang Anda inginkan
+
+    $auditors = Auditor::whereIn('id', $auditorIds)
+        ->whereDoesntHave('answers', function ($query) use ($today) {
+            $query->whereDate('created_at', $today)
+                ->whereHas('questions.subsection.sections', function ($query) {
+                    $query->where('area', 'Painting');
+                });
+        })
+        ->get();
     return view('layouts.painting.checksheetpainting', compact('judul', 'sections', 'auditors'));
 });
 Route::get('/dashboard-painting', [PaintingController::class, 'painting']);
@@ -127,17 +146,28 @@ Route::get('/dashboardassy', function () {
     // dd("masuk");
     return view('dashboardassy');
 });
+
+
+Route::get('/login', function () {
+    $judul = "login";
+    return view('login', compact('judul'));
+});
 Route::get('/checksheetassy', function () {
     $judul = "CHECKSHEET ASSY";
     $today = Carbon::today();
     $sections = Section::with(['subsections'], ['parts'])->where('area', 'assy')->get();
 
-    $auditors = Auditor::whereDoesntHave('answers', function ($query) use ($today) {
-        $query->whereDate('created_at', $today)
-            ->whereHas('questions.subsection.sections', function ($query) {
-                $query->where('area', 'Assy');
-            });
-    })->get();
+    $auditorIds = [3]; // Ganti dengan daftar ID auditor yang Anda inginkan
+
+    $auditors = Auditor::whereIn('id', $auditorIds)
+        ->whereDoesntHave('answers', function ($query) use ($today) {
+            $query->whereDate('created_at', $today)
+                ->whereHas('questions.subsection.sections', function ($query) {
+                    $query->where('area', 'Assy');
+                });
+        })
+        ->get();
+    
     return view('layouts.assy.checksheetassy', compact('judul', 'sections', 'auditors'));
 });
 Route::get('/dashboard-assy', [AssyController::class, 'assy']);
@@ -169,82 +199,107 @@ Route::get('/supplier-history', [SupplierController::class, 'supplierHistory'])-
 Route::get('/detail-supplier/{id}', [SupplierController::class, 'detailSupplierToday'])->name('detailSupplier');
 
 Route::get('/basestator', function () {
-    $judul = "CHECKSHEET SUPPLIER";
+    $judul = "CHECKSHEET BASE STATOR ASSY K59J";
     $sections = Section::with(['subsections'], ['parts'])->where('id', 12)->get();
     $today = Carbon::today();
-    $auditors = Auditor::whereDoesntHave('supp_answers', function ($query) use ($today) {
-        $query->whereDate('created_at', $today)
-            ->whereHas('questions.subsection.sections', function ($query) {
-                $query->where('id', '12');
-            });
-    })->get();
+    $auditorIds = [5,10]; // Ganti dengan daftar ID auditor yang Anda inginkan
+
+    $auditors = Auditor::whereIn('id', $auditorIds)
+        ->whereDoesntHave('supp_answers', function ($query) use ($today) {
+            $query->whereDate('created_at', $today)
+                ->whereHas('questions.subsection.sections', function ($query) {
+                    $query->where('id', '12');
+                });
+        })
+        ->get();
 
 
     // dd($sections);
     return view('basestator', compact('judul', 'sections', 'auditors'));
 });
 Route::get('/k1aa', function () {
-    $judul = "CHECKSHEET SUPPLIER";
+    $judul = "CHECKSHEET COVER L SIDE K1AA";
 
 
     $sections = Section::with(['subsections'], ['parts'])
         ->where('id', '14')->get();
 
     $today = Carbon::today();
-    $auditors = Auditor::whereDoesntHave('supp_answers', function ($query) use ($today) {
-        $query->whereDate('created_at', $today)
-            ->whereHas('questions.subsection.sections', function ($query) {
-                $query->where('id', '14');
-            });
-    })->get();
+    $auditorIds = [6]; // Ganti dengan daftar ID auditor yang Anda inginkan
+
+    $auditors = Auditor::whereIn('id', $auditorIds)
+        ->whereDoesntHave('supp_answers', function ($query) use ($today) {
+            $query->whereDate('created_at', $today)
+                ->whereHas('questions.subsection.sections', function ($query) {
+                    $query->where('id', '14');
+                });
+        })
+        ->get();
 
     return view('k1aa', compact('judul', 'sections', 'auditors'));
 });
 Route::get('/k2fa', function () {
-    $judul = "CHECKSHEET SUPPLIER";
+    $judul = "CHECKSHEET COVER L SIDE K2FA";
     $sections = Section::with(['subsections'], ['parts'])
         ->where('id', '13')->get();
 
     $today = Carbon::today();
-    $auditors = Auditor::whereDoesntHave('supp_answers', function ($query) use ($today) {
-        $query->whereDate('created_at', $today)
-            ->whereHas('questions.subsection.sections', function ($query) {
-                $query->where('id', '13');
-            });
-    })->get();
+    $auditorIds = [8]; // Ganti dengan daftar ID auditor yang Anda inginkan
+
+    $auditors = Auditor::whereIn('id', $auditorIds)
+        ->whereDoesntHave('supp_answers', function ($query) use ($today) {
+            $query->whereDate('created_at', $today)
+                ->whereHas('questions.subsection.sections', function ($query) {
+                    $query->where('id', '13');
+                });
+        })
+        ->get();
 
     return view('k1aa', compact('judul', 'sections', 'auditors'));
 });
 Route::get('/railrear', function () {
-    $judul = "CHECKSHEET SUPPLIER";
+    $judul = "CHECKSHEET RAIL REAR GRAB K59J";
     $sections = Section::with(['subsections'], ['parts'])
         ->where('id', '15')->get();
 
     $today = Carbon::today();
-    $auditors = Auditor::whereDoesntHave('supp_answers', function ($query) use ($today) {
-        $query->whereDate('created_at', $today)
-            ->whereHas('questions.subsection.sections', function ($query) {
-                $query->where('id', '15');
-            });
-    })->get();
+    $auditorIds = [9]; // Ganti dengan daftar ID auditor yang Anda inginkan
+
+    $auditors = Auditor::whereIn('id', $auditorIds)
+        ->whereDoesntHave('supp_answers', function ($query) use ($today) {
+            $query->whereDate('created_at', $today)
+                ->whereHas('questions.subsection.sections', function ($query) {
+                    $query->where('id', '15');
+                });
+        })
+        ->get();
 
     return view('k1aa', compact('judul', 'sections', 'auditors'));
 });
 Route::get('/oilpump', function () {
-    $judul = "CHECKSHEET SUPPLIER";
+    $judul = "CHECKSHEET OIL PUMP SET K2SA";
     $sections = Section::with(['subsections'], ['parts'])
         ->where('id', '16')->get();
 
     $today = Carbon::today();
-    $auditors = Auditor::whereDoesntHave('supp_answers', function ($query) use ($today) {
-        $query->whereDate('created_at', $today)
-            ->whereHas('questions.subsection.sections', function ($query) {
-                $query->where('id', '16');
-            });
-    })->get();
+    $auditorIds = [7]; // Ganti dengan daftar ID auditor yang Anda inginkan
+
+    $auditors = Auditor::whereIn('id', $auditorIds)
+        ->whereDoesntHave('supp_answers', function ($query) use ($today) {
+            $query->whereDate('created_at', $today)
+                ->whereHas('questions.subsection.sections', function ($query) {
+                    $query->where('id', '16');
+                });
+        })
+        ->get();
 
     return view('k1aa', compact('judul', 'sections', 'auditors'));
 });
 
 
 Route::post('/auditors', [AuditorController::class, 'store'])->name('auditors.store');
+Route::get('/getAuditorName/{nrp}', [AuditorController::class, 'getAuditorName']);
+
+Route::get('/login', [AuthController::class, 'index']);
+Route::post('/sesi/login', [AuthController::class, 'login']);
+
