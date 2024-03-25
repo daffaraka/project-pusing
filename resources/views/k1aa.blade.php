@@ -9,10 +9,16 @@
                     <label for="auditor_id" class="mb-3" style="font-size: 20px; font-weight: bold;">Auditor Name <span
                             class="text-danger">*</span></label>
                     <select name="auditor_id" id="auditor_name" class="form-control mb-4">
-                        <option value="">Select Auditor Name</option>
-                        @foreach ($auditors as $auditor)
-                            <option value="{{ $auditor->id }}">{{ $auditor->auditor_name }}</option>
-                        @endforeach
+                        @if (count($auditors) != 0)
+                            <option value=""> Select Auditor Name</option>
+                            @foreach ($auditors as $auditor)
+                                <option value="{{ $auditor->id }}">{{ $auditor->auditor_name }}</option>
+                            @endforeach
+                        @else
+                            {{-- Jika  sudah mengisi semua --}}
+                            <option value=""> All auditors has been insert answers this day
+                                ({{ Carbon\Carbon::today()->isoFormat('dddd, D MMMM Y') }}) </option>
+                        @endif
                     </select>
 
                     {{-- Auditor Level Select Option --}}
@@ -67,8 +73,8 @@
                                     </tr>
                                     <tr>
                                         <td></td>
-                                        <td>{{$subsection->questions[0]->yes_desc}}</td>
-                                        <td>{{$subsection->questions[0]->no_desc}}</td>
+                                        <td>{{ $subsection->questions[0]->yes_desc }}</td>
+                                        <td>{{ $subsection->questions[0]->no_desc }}</td>
                                         <td>Notes</td>
 
                                     </tr>
@@ -92,7 +98,8 @@
                                                     <input for="remark" type="radio" class="form-check-input1"
                                                         id="remark_{{ $question->id }}_1"
                                                         name="answer[{{ $question->id }}][remark]" value="100"
-                                                        {{ old('remark_' . $question->id . '_1') == '1' ? 'checked' : '' }} @required(true)>
+                                                        {{ old('remark_' . $question->id . '_1') == '1' ? 'checked' : '' }}
+                                                        @required(true)>
                                                 </td>
                                                 <td>
                                                     <input for="remark" type="radio" class="form-check-input2"

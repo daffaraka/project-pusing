@@ -1,6 +1,5 @@
 @extends('layouts.template')
 @section('content')
-
     <main class="my-5">
         <div class="container-fluid px-4">
             <div class="card mb-4">
@@ -72,12 +71,12 @@
                                             {{ $answer->mark }}
                                         @else
                                             @if ($answer->image)
-                                            <a href="{{ asset('storage/' . $answer->image) }}"
-                                                data-lightbox="answer-images">
-                                                <img src="{{ asset('storage/' . $answer->image) }}"
-                                                    style="max-width: 95px; max-height: 95px; cursor: pointer;"
-                                                    alt="Answer Image">
-                                            </a>
+                                                <a href="{{ asset('storage/' . $answer->image) }}"
+                                                    data-lightbox="answer-images">
+                                                    <img src="{{ asset('storage/' . $answer->image) }}"
+                                                        style="max-width: 95px; max-height: 95px; cursor: pointer;"
+                                                        alt="Answer Image" class="img-fluid zoomable-image">
+                                                </a>
                                             @endif
                                         @endif
                                     </td>
