@@ -9,6 +9,8 @@
                     <label for="auditor_id" class="mb-3" style="font-size: 20px; font-weight: bold;">Auditor Name <span
                             class="text-danger">*</span></label>
                     <select name="auditor_id" id="auditor_name" class="form-control mb-4">
+
+                        {{-- Cek jika ada auditors yang belum mengisi --}}
                         @if (count($auditors) != 0)
                             <option value=""> Select Auditor Name</option>
                             @foreach ($auditors as $auditor)
@@ -19,6 +21,7 @@
                             <option value=""> All auditors has been insert answers this day
                                 ({{ Carbon\Carbon::today()->isoFormat('dddd, D MMMM Y') }}) </option>
                         @endif
+
                     </select>
 
                     {{-- Auditor Level Select Option --}}
@@ -60,21 +63,15 @@
                                     <td colspan="3" style="font-size: 16px; font-weight: bold;">{{ $subsection->title }}
                                     </td>
                                 </tr>
+
                                 <tr>
                                     <td></td>
                                     <td>{{ $subsection->questions[0]->yes_desc }}</td>
                                     <td>{{ $subsection->questions[0]->no_desc }}</td>
-                                    <td>Notes</td>
-
+                                    <td>Note</td>
                                 </tr>
                                 @foreach ($subsection->questions as $question)
                                     @if ($question->type != 'image')
-                                        {{-- <tr>
-                                            <td></td>
-                                            <td>{{ $question->yes_desc }}</td>
-                                            <td>{{ $question->no_desc }}</td>
-                                            <td>Note</td>
-                                        </tr> --}}
                                         <tr>
                                             {{-- <td data-question-id="{{ $question->id }}">{{ $question->question }}</td> --}}
                                             <td data-question-id="{{ $question->id }}">
@@ -120,11 +117,47 @@
             </div>
         @endforeach
 
-        <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
-        <button type="button" class="btn btn-secondary btn-lg btn-block">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-lg btn-block"
+            onclick="alert('Data has been successfully saved.');">Submit</button>
+        <button id="cancelButton" type="button" class="btn btn-secondary btn-lg btn-block">Cancel</button>
     </form>
 @endsection
 @push('js')
+    <script>
+        // Ketika nilai auditor_name berubah
+        $('#auditor_name').on('input', function() {
+            var auditorName = $(this).val();
+            // Lakukan permintaan AJAX untuk mencari auditor_id berdasarkan nama auditor
+            $.ajax({
+                type: 'GET',
+                url: '/search/auditor',
+                data: {
+                    auditor_name: auditorName
+                },
+                success: function(response) {
+                    // Jika auditor_id ditemukan, perbarui nilai input tersembunyi
+                    if (response.success) {
+                        $('#auditor_id').val(response.auditor_id);
+                    } else {
+                        // Jika tidak ada hasil, atur nilai input tersembunyi menjadi kosong
+                        $('#auditor_id').val('');
+                    }
+                }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Mendapatkan referensi tombol "Cancel"
+            var cancelButton = document.getElementById("cancelButton");
+
+            // Menambahkan event listener untuk meng-handle klik tombol "Cancel"
+            cancelButton.addEventListener("click", function() {
+                // Merefresh halaman
+                location.reload();
+            });
+        });
+    </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {

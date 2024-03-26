@@ -74,11 +74,11 @@
                                             {{ $answer->mark }}
                                         @else
                                             @if ($answer->image)
-                                                <a href="{{ asset('storage/images/') }}"
+                                                <a href="{{ asset('storage/' . $answer->image) }}"
                                                     data-lightbox="answer-images">
-                                                    <img src="{{ asset($answer->image) }}"
+                                                    <img src="{{ asset('storage/' . $answer->image) }}"
                                                         style="max-width: 95px; max-height: 95px; cursor: pointer;"
-                                                        alt="Answer Image">
+                                                        alt="Answer Image" class="img-fluid zoomable-image">
                                                 </a>
                                             @endif
                                         @endif

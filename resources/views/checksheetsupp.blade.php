@@ -2,20 +2,55 @@
 @section('content')
     <form method="post" action="{{ route('answer.store') }}" enctype="multipart/form-data">
         {{ csrf_field() }}
-
-        <a href="{{ url('/basestator') }}" class="btn btn-secondary btn-lg btn-block">BASE STATOR ASSY K59J</a>
-        <br>
-        <br>
-        <a href="{{ url('/k1aa') }}" class="btn btn-secondary btn-lg btn-block">COVER L SIDE K2FA</a>
-        <br>
-        <br>
-        <a href="{{ url('/k2fa') }}" class="btn btn-secondary btn-lg btn-block">COVER L SIDE K1AA</a>
-        <br>
-        <br>
-        <a href="{{ url('/oilpump') }}" class="btn btn-secondary btn-lg btn-block">RAIL REAR GRAB K59J</a>
-        <br>
-        <br>
-        <a href="{{ url('/railrear') }}" class="btn btn-secondary btn-lg btn-block">OIL PUMP SET K2SA</a>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">BASE STATOR ASSY K59J</h5>
+                        {{-- <p class="card-text">.</p> --}}
+                        <a href="{{ url('/basestator') }}" class="btn btn-primary">CHECKSHEET</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">COVER L SIDE K2FA</h5>
+                        {{-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> --}}
+                        <a href="{{ url('/k2fa') }}" class="btn btn-primary">CHECKSHEET</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">COVER L SIDE K1AA</h5>
+                        {{-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> --}}
+                        <a href="{{ url('/k1aa') }}" class="btn btn-primary">CHECKSHEET</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">RAIL REAR GRAB K59J</h5>
+                        {{-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> --}}
+                        <a href="{{ url('/railrear') }}" class="btn btn-primary">CHECKSHEET</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">OIL PUMP SET K2SA</h5>
+                        {{-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> --}}
+                        <a href="{{ url('/oilpump') }}" class="btn btn-primary">CHECKSHEET</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
 @endsection
 @push('js')
@@ -78,7 +113,7 @@
 
 
 
-   {{-- <div class="card-body">
+{{-- <div class="card-body">
             <div class="card mb-4">
                 <div class="card-body">
                     {{-- Auditor Name Select Option
@@ -107,8 +142,8 @@
             </div>
         </div> --}}
 
-        {{-- Card Question --}}
-        {{-- @foreach ($sections as $section)
+{{-- Card Question --}}
+{{-- @foreach ($sections as $section)
             <div class="card mb-4">
                 <div class="card-title fs-5 ms-2 fw-bold   ">
                     Page {{ $loop->iteration }}
@@ -177,5 +212,5 @@
             </div>
         @endforeach --}}
 
-        {{-- <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+{{-- <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
         <button type="button" class="btn btn-secondary btn-lg btn-block">Cancel</button> --}}

@@ -125,6 +125,6 @@ class PaintingController extends Controller
                 $query->where('area', 'Painting');
             })->with('questions.subsection.sections')
             ->get();
-        return view('layouts.machinning.detailMachiningHistory', compact(['judul', 'data', 'auditor']));
+        return view('layouts.painting.detailPaintingHistory', compact(['judul', 'data', 'auditor']));
     }
 }

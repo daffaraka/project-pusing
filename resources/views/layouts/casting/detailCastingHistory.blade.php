@@ -25,6 +25,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {{-- <tr class="">
+                                        <td>{{ Carbon\Carbon::now()->isoFormat('dddd, D MMMM Y') }}</td>
+                                        <td scope="row">{{ $auditor->auditor_name }}</td>
+                                        <td>{{ $auditor->auditor_level }}</td>
+                                        <td>{{ count($data->answers) }}</td>
+                                        <td>{{ round($data->answers->sum('mark') / $totalQuestion, 1) }}</td>
+
+                                    </tr> --}}
                                 </tbody>
                             </table>
                         </div>
@@ -76,7 +84,6 @@
                                 </tr>
                             @endforeach
                         </tbody>
-
                     </table>
                 </div>
             </div>

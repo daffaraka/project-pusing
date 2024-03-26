@@ -74,7 +74,7 @@ Route::get('/checksheetcasting', function () {
         ->whereDoesntHave('answers', function ($query) use ($today) {
             $query->whereDate('created_at', $today)
                 ->whereHas('questions.subsection.sections', function ($query) {
-                    $query->where('area', 'Assy');
+                    $query->where('area', 'Casting HPDC');
                 });
         })
         ->get();

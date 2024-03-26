@@ -74,7 +74,7 @@ class AssyController extends Controller
 
     public function detailAssyToday($id)
     {
-        $judul = "DETAIL HISTORY AUDIT ASSY";
+        $judul = "DETAIL AUDIT ASSY";
         $today = Carbon::now()->today();
         $auditor = Auditor::find($id);
         // $data = $auditor->answers()->whereDate('created_at',$today)->get();

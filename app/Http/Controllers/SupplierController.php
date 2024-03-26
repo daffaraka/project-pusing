@@ -62,13 +62,19 @@ class SupplierController extends Controller
         })->sum('mark');
 
         $totalSection = count(Section::whereArea('Supplier')->get());
-        $totalQuestion = count(Question::whereIn('subsection_id', [23, 24])->get());
+    // $totalQuestion = count(Question::whereIn('subsection_id', [23, 24])->get());
+        $totalQuestion1 = count(Question::whereIn('subsection_id', [37])->get());//oil pump part_id 9
+        $totalQuestion2 = count(Question::whereIn('subsection_id', [25,26])->get());//basestator part_id 10
+        $totalQuestion3 = count(Question::whereIn('subsection_id', [27,28,29])->get());//cover side k2fa part_id 11
+        $totalQuestion4 = count(Question::whereIn('subsection_id', [30,31,32])->get());//cover l side k1aa part_id 4
+        $totalQuestion5 = count(Question::whereIn('subsection_id', [33,34,35,36,38])->get());//rail rear part_id 12 
+        // $totalQuestion1 = count(Question::whereIn('subsection_id', [25, 26])->get());
 
 
         // dd($totalQuestion);
         // dd($auditorsSupplier[1]->supp_answers->sum('mark') / $totalQuestion);
 
-        return view('layouts.supplier.dashboardSupplier', compact('sectionId', 'auditorsSupplier', 'subsectionId', 'questionId', 'answerId', 'totalSection', 'totalQuestion', 'judul', 'monthlySupplier'));
+        return view('layouts.supplier.dashboardSupplier', compact('sectionId', 'auditorsSupplier', 'subsectionId', 'questionId', 'answerId', 'totalSection', 'totalQuestion1', 'totalQuestion2', 'totalQuestion3', 'totalQuestion4', 'totalQuestion5', 'judul', 'monthlySupplier'));
     }
 
 

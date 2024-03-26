@@ -18,7 +18,7 @@ class DashboardController extends Controller
     public function casting(Request $request)
     {
 
-        $judul = "DASHBOARD CHECKSHEET CASTING";
+        $judul = "DASHBOARD CASTING";
         $sectionId = Section::with(['subsections'], ['parts'])->where('part_id', 1)->get()->pluck('id')->toArray();
         $subsectionId = Subsection::whereIn('section_id', $sectionId)->get()->pluck('id')->toArray();
         $questionId = Question::whereIn('subsection_id', $subsectionId)->get()->pluck('id')->toArray();
@@ -73,17 +73,23 @@ class DashboardController extends Controller
 
     public function detailCastingToday($id)
     {
-        $judul = "DETAIL HISTORY AUDIT";
-
+        
+        $judul = "DETAIL AUDIT CASTING";
         $today = Carbon::now()->today();
-
         $auditor = Auditor::find($id);
-        $data = $auditor->answers()->whereDate('created_at', $today)->get();
+        // $data = $auditor->answers()->whereDate('created_at',$today)->get();
+
+        $data = Auditor::with(['answers' => function ($query) use ($today) {
+            $query->whereDate('created_at', $today)
+                ->whereHas('questions.subsection.sections', function ($query) {
+                    $query->where('area', 'Casting HPDC');
+                });
+        }, 'answers.questions.subsection.sections'])->find($id);
+
         $totalQuestion = count(Question::whereIn('subsection_id', [1, 2, 3, 4, 5, 6, 7, 8])->get());
 
         return view('layouts.casting.detailcasting', compact('judul', 'data', 'totalQuestion', 'auditor'));
     }
-
     public function castingHistory(Request $request)
     {
         $judul = "CHECKSHEET CASTING HISTORY";

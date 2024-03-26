@@ -48,7 +48,7 @@
                         alt="Document Image Preview" class="img-fluid">
                     <br>
                     <label for="part_name" class="mb-3" style="font-size: 18px; font-weight: bold;">
-                        NamaPart : {{ $section->parts->part_name }}
+                        Nama Part : {{ $section->parts->part_name }}
                     </label>
                     <br>
                     <label for="problem" class="mb-3" style="font-size: 18px; font-weight: bold;">Problem :
@@ -80,7 +80,8 @@
                                                 <input for="remark" type="radio" class="form-check-input1"
                                                     id="remark_{{ $question->id }}_1"
                                                     name="answer[{{ $question->id }}][remark]" value="100"
-                                                    {{ old('remark_' . $question->id . '_1') == '1' ? 'checked' : '' }} @required(true)>
+                                                    {{ old('remark_' . $question->id . '_1') == '1' ? 'checked' : '' }}
+                                                    @required(true)>
                                             </td>
                                             <td>
                                                 <input for="remark" type="radio" class="form-check-input2"
@@ -113,11 +114,20 @@
             </div>
         @endforeach
 
-        <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
-        <button type="button" class="btn btn-secondary btn-lg btn-block">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-lg btn-block"
+            onclick="alert('Data has been successfully saved.');">Submit</button>
+        <button type="button" id="cancelButton" class="btn btn-secondary btn-lg btn-block">Cancel</button>
     </form>
 @endsection
 @push('js')
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var cancelButton = document.getElementById("cancelButton");
+            cancelButton.addEventListener("click", function() {
+                location.reaload();
+            });
+        });
+    </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {

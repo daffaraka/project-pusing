@@ -28,8 +28,8 @@
                                         <td>{{ Carbon\Carbon::now()->isoFormat('dddd, D MMMM Y') }}</td>
                                         <td scope="row">{{ $auditor->auditor_name }}</td>
                                         <td>{{ $auditor->auditor_level }}</td>
-                                        <td>{{ count($auditor->answers) }}</td>
-                                        <td>{{ round($auditor->answers->sum('mark') / $totalQuestion, 1) }}</td>
+                                        <td>{{ count($data->answers) }}</td>
+                                        <td>{{ round($data->answers->sum('mark') / $totalQuestion, 1) }}</td>
 
                                     </tr>
                                 </tbody>
@@ -37,7 +37,7 @@
                         </div>
                     </div>
                     <hr>
-                    <h4 class="fw-bold">Audit Data</h4>
+                    {{-- <h4 class="fw-bold">Audit Data</h4> --}}
                     <table id="datatablesSimple" class="table table-bordered">
                         <thead>
                             <tr>
@@ -49,7 +49,7 @@
                         </thead>
                         <tbody>
                             @php $previousSubsectionTitle = ''; @endphp
-                            @foreach ($data as $answer)
+                            @foreach ($data->answers as $answer)
                                 @if ($answer->questions->type != 'image')
                                     @if ($previousSubsectionTitle != $answer->questions->subsection->title)
                                         <tr>
@@ -68,11 +68,10 @@
                                             {{ $answer->mark }}
                                         @else
                                             @if ($answer->image)
-                                                <a href="{{ asset('storage/' . $answer->image) }}"
-                                                    data-lightbox="answer-images">
+                                                <a href="{{ asset('storage/' . $answer->image) }}" class="zoomable-link">
                                                     <img src="{{ asset('storage/' . $answer->image) }}"
                                                         style="max-width: 95px; max-height: 95px; cursor: pointer;"
-                                                        alt="Answer Image">
+                                                        alt="Answer Image" class="img-fluid zoomable-image">
                                                 </a>
                                             @endif
                                         @endif
@@ -84,17 +83,34 @@
                     </table>
                 </div>
             </div>
-
         </div>
     </main>
 @endsection
-<script src="path/to/lightbox.js"></script>
-<script>
-    lightbox.option({
-        'resizeDuration': 200,
-        'wrapAround': true,
-        'showImageNumberLabel': false,
-        'showDownloadButton': true,
-        'downloadButtonText': 'Download'
-    });
-</script>
+@push('js')
+    <script src="path/to/lightbox.js"></script>
+    <script>
+        lightbox.option({
+            'resizeDuration': 200,
+            'wrapAround': true,
+            'showImageNumberLabel': false,
+            'showDownloadButton': true,
+            'downloadButtonText': 'Download'
+        });
+    </script>
+    <script>
+        // Ambil semua tautan dengan kelas zoomable-link
+        var zoomableLinks = document.querySelectorAll('.zoomable-link');
+
+        // Loop melalui setiap tautan dan tambahkan event listener
+        zoomableLinks.forEach(function(link) {
+            link.addEventListener('mouseover', function() {
+                // Saat kursor masuk ke tautan, ubah ukuran gambar
+                this.querySelector('.zoomable-image').style.transform = 'scale(1.2)';
+            });
+
+            link.addEventListener('mouseout', function() {
+                // Saat kursor meninggalkan tautan, kembalikan ukuran gambar ke semula
+                this.querySelector('.zoomable-image').style.transform = 'scale(1)';
+            });
+        });
+    </script>

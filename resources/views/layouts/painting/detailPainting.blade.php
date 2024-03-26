@@ -66,9 +66,10 @@
                                             {{ $answer->mark }}
                                         @else
                                             @if ($answer->image)
-                                                <a href="{{ asset('storage/' . $answer->image) }}" download>
+                                                <a href="{{ asset('storage/' . $answer->image) }}" class="zoomable-link">
                                                     <img src="{{ asset('storage/' . $answer->image) }}"
-                                                        style="max-width: 95px; max-height: 95px;" alt="Answer Image">
+                                                        style="max-width: 95px; max-height: 95px;" alt="Answer Image"
+                                                        class="img-fluid zoomable-image">
                                                 </a>
                                             @endif
                                         @endif
@@ -77,10 +78,23 @@
                                 </tr>
                             @endforeach
                         </tbody>
-
                     </table>
                 </div>
             </div>
         </div>
     </main>
 @endsection
+@push('js')
+    <script>
+        var zoomableLinks = document.querySelectorAll('.zoomable-link');
+
+        zoomableLinks.forEach(function(link) {
+            link.addEventListener('mouseenter', function() {
+                this.querySelector('.zoomable-image').style.transform = 'scale(1.2)';
+            });
+
+            link.addEventListener('mouseleave', function() {
+                this.querySelector('.zoomable-image').style.transform = 'scale(1)';
+            });
+        });
+    </script>

@@ -32,7 +32,7 @@
                                         <td>{{ $auditor->supp_answers[0]->questions->subsection->sections->parts->part_name }}
                                         </td>
                                         <td>{{ count($data->supp_answers) }}</td>
-                                        <td>{{ round($data->supp_answers->sum('mark') / $totalQuestion, 1) }}</td>
+                                        <td>{{ round($auditor->supp_answers->sum('mark') / $totalQuestion, 1) }}</td>
 
                                     </tr>
                                 </tbody>
@@ -77,7 +77,7 @@
                                                     data-lightbox="answer-images">
                                                     <img src="{{ asset('storage/' . $supp_answers->image) }}"
                                                         style="max-width: 95px; max-height: 95px; cursor: pointer;"
-                                                        alt="Answer Image">
+                                                        alt="Answer Image" class="img-fluid zoomable-image">
                                                 </a>
                                             @endif
                                         @endif
