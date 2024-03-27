@@ -53,33 +53,4 @@ class SuppAnswerController extends Controller
         Storage::makeDirectory('public/images');
     }
 }
-
-
-    //  $imagePath = file_get_contents($request->file('image')->getRealPath());
-    // try {
-    //     // Simpan jawaban
-    //     $answerId = DB::table('answers1')->insertGetId([
-    //         'auditor_id' => $auditor_id,
-    //         'question_id' => $question_id,
-    //         'image' => $imagePath
-    //     ]);
-
-    //     // Simpan catatan auditor
-    //     foreach ($request->remark as $remark) {
-    //         DB::table('remarks1')->insert([
-    //             'answer_id' => $answer_id,
-    //             'remark' => $remark,
-    //             'note' => $note,
-    //         ]);
-    //     }
-
-    //     // Commit transaksi jika tidak ada kesalahan
-    //     DB::commit();
-
-    //     return redirect('/checksheetcasting');
-    // } catch (\Exception $e) {
-    //     // Rollback transaksi jika terjadi kesalahan
-    //     DB::rollBack();
-
-    //     // Tangani kesalahan sesuai kebutuhan Anda
-    // }
+   

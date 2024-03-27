@@ -49,7 +49,7 @@
                         alt="Document Image Preview" class="img-fluid">
                     <br>
                     <label for="part_name" class="mb-3" style="font-size: 18px; font-weight: bold;">
-                        NamaPart : {{ $section->parts->part_name }}
+                        Nama Part : {{ $section->parts->part_name }}
                     </label>
                     <br>
                     <label for="problem" class="mb-3" style="font-size: 18px; font-weight: bold;">Problem :

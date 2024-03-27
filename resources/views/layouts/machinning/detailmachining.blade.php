@@ -70,11 +70,10 @@
                                             {{ $answer->mark }}
                                         @else
                                             @if ($answer->image)
-                                                <a href="{{ asset('storage/' . $answer->image) }}"
-                                                    data-lightbox="answer-images">
+                                                <a href="{{ asset('storage/' . $answer->image) }}" class="zoomable-link">
                                                     <img src="{{ asset('storage/' . $answer->image) }}"
-                                                        style="max-width: 95px; max-height: 95px; cursor: pointer;"
-                                                        alt="Answer Image" class="img-fluid zoomable-image">
+                                                        style="max-width: 95px; max-height: 95px;" alt="Answer Image"
+                                                        class="img-fluid zoomable-image">
                                                 </a>
                                             @endif
                                         @endif

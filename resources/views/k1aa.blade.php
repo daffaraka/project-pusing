@@ -28,12 +28,6 @@
                         <option value="">Select Auditor Level</option>
                     </select>
 
-                    {{-- To Show Area Process
-                    <label for="area" class="mb-3" style="font-size: 20px; font-weight: bold;">Line / Process<span
-                            class="text-danger">*</span> </label> --}}
-                    {{-- <br>
-                    <label for="area">{{ $sections[0]->area }}</label> --}}
-
                     <label for="line" class="mb-3" style="font-size: 20px; font-weight: bold;">Line/Process:</label>
                     <select id="line" name="line" class="form-control mb-4">
                         <option value="Incoming Inspection NM">Incoming Inspection NM</option>
@@ -58,7 +52,7 @@
                             alt="Document Image Preview" class="img-fluid">
                         <br>
                         <label for="part_name" class="mb-3" style="font-size: 18px; font-weight: bold;">
-                            NamaPart : {{ $section->parts->part_name }}
+                            Nama Part : {{ $section->parts->part_name }}
                         </label>
                         <br>
                         <label for="problem" class="mb-3" style="font-size: 18px; font-weight: bold;">Problem :

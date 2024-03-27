@@ -62,7 +62,7 @@ class AnswerController extends Controller
             if (isset($value['image'])) {
                 $imageName = $name . '-' . now()->format('Y-m-d_H-i-s') . '-' . $value['image']->getClientOriginalName();
 
-                $value['image']->move('images', $imageName); // Simpan gambar dengan nama asli ke dalam folder "public/images"
+                $value['image']->storeAs('images', $imageName, 'public'); // Simpan gambar dengan nama asli ke dalam folder "public/images"
 
                 FixAnswer::create([
                     'auditor_id' => $request->auditor_id,
